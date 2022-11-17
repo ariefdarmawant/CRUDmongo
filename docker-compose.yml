@@ -1,6 +1,6 @@
 version: "3"
 services:
-  mongo:
+  mongodb:
     container_name: mongo
     image: mongo
     environment:
@@ -10,3 +10,20 @@ services:
       - ./data:/data/db
     ports:
       - "27017:27017"
+  express:
+    depends_on:
+      - mongodb
+    build: ./
+    environment:
+      - DB_HOST=mongodb
+      - DB_USER=admin
+      - DB_PASSWORD=password
+      - DB_NAME=CRUDmongo
+      - DB_PORT=27017
+    restart: always
+    ports:
+      - "3000:3000"
+    stdin_open: true
+    tty: true
+    labels:
+      kompose.service.type: LoadBalancer

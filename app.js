@@ -1,17 +1,17 @@
 import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
+import dotenv from "dotenv";
 import swaggerUi from "swagger-ui-express";
 import swaggerDocs from "./swagger.js";
 import authRoutes from "./routes/auth.js";
 import userRoutes from "./routes/user.js";
+import dbURL from './configs/db.js';
 
+dotenv.config();
 const app = express();
 
-mongoose.connect("mongodb://localhost:27017/crudmongo", {
-  authSource: "admin",
-  user: "admin",
-  pass: "password",
+mongoose.connect(dbURL.url, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
