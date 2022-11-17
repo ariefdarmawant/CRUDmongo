@@ -1,6 +1,8 @@
 import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
+import swaggerUi from "swagger-ui-express";
+import swaggerDocs from "./swagger.js";
 import authRoutes from "./routes/auth.js";
 import userRoutes from "./routes/user.js";
 
@@ -34,5 +36,7 @@ app.use(function (req, res, next) {
 authRoutes(app);
 //Activate user routes
 userRoutes(app);
+
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 app.listen("3000", () => console.log("Server Running at port: 3000"));

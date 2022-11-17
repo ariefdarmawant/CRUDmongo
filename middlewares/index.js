@@ -37,6 +37,7 @@ export const checkDuplicateEmailOrUsername = async (req, res, next) => {
   next();
 };
 
+
 export const verifyToken = (req, res, next) => {
   let token = req.headers["x-access-token"];
 
@@ -48,7 +49,9 @@ export const verifyToken = (req, res, next) => {
 
   jwt.verify(token, configs.secret, (err, decoded) => {
     if (err) {
-      return catchError(err, res);
+      return res
+        .sendStatus(HTTP_STATUS.UNAUTHORIZED)
+        .send({ message: "Unauthorized!" });
     }
     req.userId = decoded._id;
     next();
@@ -67,11 +70,11 @@ export const isAdmin = async (req, res, next) => {
   }
 };
 
-export const isAdminOrCurrentUser = async (req,res,next) => {
-    if(req.userId === req.params.id) {
-        next();
-    } else{
-        //check isAdmin
-        isAdmin(req,res,next);
-    }
-}
+export const isAdminOrCurrentUser = async (req, res, next) => {
+  if (req.userId === req.params.id) {
+    next();
+  } else {
+    //check isAdmin
+    isAdmin(req, res, next);
+  }
+};
