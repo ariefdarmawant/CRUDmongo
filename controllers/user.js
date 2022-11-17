@@ -1,5 +1,6 @@
 import bcrypt from "bcryptjs";
 import HTTP_STATUS from "../constants/index.js";
+import RefreshToken from "../models/RefreshToken.js";
 import User from "../models/User.js";
 
 export const getAllUsers = async (_, res) => {
@@ -8,8 +9,8 @@ export const getAllUsers = async (_, res) => {
     res
       .status(HTTP_STATUS.OK)
       .send({ message: "User list fetched.", data: users });
-  } catch {
-    res.status(HTTP_STATUS.BAD_GATEWAY).send();
+  } catch (e) {
+    res.status(HTTP_STATUS.BAD_GATEWAY).send({ message: e });
   }
 };
 
@@ -24,8 +25,8 @@ export const getUserById = async (req, res) => {
     res
       .status(HTTP_STATUS.OK)
       .send({ message: `User with id ${req.params.id} fetched.`, data: user });
-  } catch {
-    res.status(HTTP_STATUS.BAD_GATEWAY).send();
+  } catch (e) {
+    res.status(HTTP_STATUS.BAD_GATEWAY).send({ message: e });
   }
 };
 
@@ -54,8 +55,8 @@ export const updateUser = async (req, res) => {
       message: `User with id ${req.params.id} updated.`,
       data: updatedUser,
     });
-  } catch {
-    res.status(HTTP_STATUS.BAD_GATEWAY).send();
+  } catch (e) {
+    res.status(HTTP_STATUS.BAD_GATEWAY).send({ message: e });
   }
 };
 
@@ -68,13 +69,13 @@ export const deleteUser = async (req, res) => {
         .send(`User with id ${req.params.id} not found`);
     }
     const deletedUser = await User.deleteOne({ _id: req.params.id });
-    res
-      .status(HTTP_STATUS.OK)
-      .send({
-        message: `User with id ${req.params.id} deleted.`,
-        data: deletedUser,
-      });
-  } catch {
-    res.status(HTTP_STATUS.BAD_GATEWAY).send();
+    //delete user refresh tokens also
+    await RefreshToken.deleteMany({ userId: req.params.id });
+    res.status(HTTP_STATUS.OK).send({
+      message: `User with id ${req.params.id} deleted.`,
+      data: deletedUser,
+    });
+  } catch (e) {
+    res.status(HTTP_STATUS.BAD_GATEWAY).send({ message: e });
   }
 };

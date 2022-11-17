@@ -11,6 +11,10 @@ const RefreshToken = mongoose.Schema({
     type: Date,
     required: true,
   },
+  userId: {
+    type: String,
+    required: true,
+  }
 });
 
 RefreshToken.statics.createToken = async function (user) {
@@ -22,11 +26,15 @@ RefreshToken.statics.createToken = async function (user) {
 
   let refreshToken = await this.create({
     token: _token,
-    userId: user.id,
+    userId: user._id,
     expiryDate: expiredAt.getTime(),
   });
 
   return refreshToken.token;
+};
+
+RefreshToken.statics.verifyExpiration = async function (token) {
+  return token.expiryDate.getTime() < new Date().getTime();
 };
 
 export default mongoose.model("RefreshTokens", RefreshToken);
