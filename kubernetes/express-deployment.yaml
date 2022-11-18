@@ -33,6 +33,7 @@ spec:
               value: "27017"
           image: ariefdarmawant/express-update:latest
           name: express
+          imagePullPolicy: Always
           ports:
             - containerPort: 3000
           resources: {}
