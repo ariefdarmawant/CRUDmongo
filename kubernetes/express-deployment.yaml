@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert --volumes hostPath
+    kompose.version: 1.26.1 (a9d05d509)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: express
+  name: express
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: express
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert --volumes hostPath
+        kompose.version: 1.26.1 (a9d05d509)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: express
+    spec:
+      containers:
+        - env:
+            - name: DB_HOST
+              value: mongodb
+            - name: DB_NAME
+              value: CRUDmongo
+            - name: DB_PORT
+              value: "27017"
+          image: ariefdarmawant/express-update:latest
+          name: express
+          ports:
+            - containerPort: 3000
+          resources: {}
+          stdin: true
+          tty: true
+      restartPolicy: Always
+status: {}

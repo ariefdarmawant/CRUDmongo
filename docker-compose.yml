@@ -11,13 +11,12 @@ services:
     ports:
       - "27017:27017"
   express:
+    image: ariefdarmawant/express-update:latest
     depends_on:
       - mongodb
-    build: ./
+    # build: ./
     environment:
       - DB_HOST=mongodb
-      - DB_USER=admin
-      - DB_PASSWORD=password
       - DB_NAME=CRUDmongo
       - DB_PORT=27017
     restart: always
@@ -25,5 +24,3 @@ services:
       - "3000:3000"
     stdin_open: true
     tty: true
-    labels:
-      kompose.service.type: LoadBalancer

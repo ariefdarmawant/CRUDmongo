@@ -11,7 +11,12 @@ import dbURL from './configs/db.js';
 dotenv.config();
 const app = express();
 
+console.log("INI URLL DBBBBBB" ,dbURL.url)
+
 mongoose.connect(dbURL.url, {
+  authSource: "admin",
+  user: "admin",
+  pass: "password",
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
