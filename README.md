@@ -18,8 +18,10 @@ Step to run this app:
 
 ## Architecture Diagram:
 
-![Architecture Diagram](/Architecture%20Diagram.drawio.png)]
+![Architecture Diagram](/Architecture%20Diagram.drawio.png)
 
 ## Kubernetes Running:
 
-![Kubernetes Running](/running%20kubernetes.png)]
+![Kubernetes Running](/running%20kubernetes.png)
+
+![Kubernetes Running Example](/running%20kubernetes%20API%20hit%20example.png)
